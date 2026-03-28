@@ -3,73 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인생 마블 - 파이널 에디션 (Sound Patch v2)</title>
+<title>인생 마블 - 오리지널 에디션</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* (기존 CSS 스타일과 동일하되, 시각적 몰입감을 위해 일부 간소화) */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root { --navy-deep: #070d24; --navy-mid: #0f1a42; --navy-light: #1a2755; --navy-line: #1e2f63; --beige: #c4a882; }
+:root {
+  --navy-deep: #070d24; --navy-base: #0b1333; --navy-mid: #0f1a42;
+  --navy-light: #1a2755; --navy-line: #1e2f63; --beige: #c4a882;
+}
+
 body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(--navy-mid); overflow-x: hidden; }
 
+/* ──────── SETUP ──────── */
 #setup { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh; background: #fff; }
 .setup-hero { text-align: center; margin-bottom: 30px; }
-.setup-hero h1 { font-size: 2.5rem; font-weight: 900; }
+.setup-hero h1 { font-size: 2.5rem; font-weight: 900; color: var(--navy-deep); }
 .setup-hero h1 span { color: var(--beige); }
 
 .card { width: 100%; max-width: 600px; background: var(--navy-mid); border-radius: 12px; padding: 24px; margin-bottom: 16px; color: #fff; }
 .card-label { font-size: .75rem; font-weight: 700; color: var(--beige); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
 .card-label::after { content:''; flex:1; height:1px; background: rgba(255,255,255,0.1); }
+
 .add-form { display: flex; gap: 8px; margin-bottom: 15px; }
 .add-form input { flex: 1; padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; }
 .add-form button { padding: 0 20px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
-.player-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.player-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .player-item { display: flex; align-items: center; gap: 10px; background: var(--navy-light); padding: 8px 12px; border-radius: 6px; }
 .token-dot { width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700; color: #fff; }
 
 .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.mode-opt { display: none; }
-.mode-label { display: flex; flex-direction: column; align-items: center; padding: 15px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); }
-.mode-opt:checked + .mode-label { border-color: var(--beige); background: rgba(196,168,130,0.15); }
+.mode-opt-group { display: flex; flex-direction: column; align-items: center; }
+.mode-opt { margin-bottom: 10px; accent-color: var(--beige); }
+.mode-label { width: 100%; display: flex; justify-content: center; align-items: center; padding: 15px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); transition: 0.2s; font-weight: 700; color: #fff; }
+.mode-opt:checked + .mode-label { border-color: var(--beige); background: rgba(196,168,130,0.15); color: var(--beige); }
 
-#start-btn { width: 100%; max-width: 600px; padding: 16px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 8px; font-size: 1rem; font-weight: 900; cursor: pointer; }
-#start-btn:disabled { opacity: 0.3; }
+#start-btn { width: 100%; max-width: 600px; padding: 16px; background: #efebe4; color: #999; border: none; border-radius: 8px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+#start-btn.active { background: #efebe4; color: var(--navy-deep); } /* 이미지에 맞춰 연한 베이지 */
+#start-btn:not(:disabled) { background: #efebe4; color: var(--navy-deep); }
 
+/* ──────── GAME ──────── */
 #game { display: none; min-height: 100vh; background: #fff; }
-.game-header { background: var(--navy-mid); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+.game-header { background: var(--navy-mid); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:100; }
+.back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: .75rem; }
+
 .game-body { max-width: 1200px; margin: 0 auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
 
+/* ──────── CONTROL PANEL ──────── */
 .control-panel { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; }
-.turn-card, .timer-card { background: var(--navy-mid); border-radius: 12px; padding: 18px; color: #fff; display: flex; align-items: center; gap: 15px; }
-#timer-display { font-size: 2.2rem; font-weight: 900; color: var(--beige); }
-.t-btn { padding: 6px 14px; border-radius: 4px; border: none; font-weight: 700; cursor: pointer; font-size: 0.75rem; }
+.turn-card, .timer-card { background: var(--navy-mid); border-radius: 12px; padding: 18px; color: #fff; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.timer-card { justify-content: space-around; }
+
+#timer-display { font-size: 2.2rem; font-weight: 900; color: var(--beige); text-shadow: 0 0 10px rgba(196,168,130,0.3); }
+.timer-controls { display: flex; flex-direction: column; gap: 6px; }
+.t-btn { padding: 6px 14px; border-radius: 4px; border: none; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
 .t-start { background: var(--beige); color: var(--navy-deep); }
-.t-reset { background: rgba(255,255,255,0.1); color: #fff; }
+.t-reset { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
 
 #roll-btn { background: var(--beige); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; color: var(--navy-deep); }
-#roll-btn:disabled { opacity: 0.5; filter: grayscale(1); }
+#roll-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
+/* ──────── BOARD ──────── */
 .board { display: flex; flex-direction: column; gap: 4px; background: #e0e0e0; padding: 4px; border-radius: 8px; }
 .board-row { display: flex; gap: 4px; height: 75px; }
-.cell { flex: 1; background: #fff; border-radius: 4px; display: flex; flex-direction: column; align-items: center; padding: 4px; position: relative; }
+.cell { flex: 1; background: #fff; border-radius: 4px; display: flex; flex-direction: column; align-items: center; padding: 4px; position: relative; overflow: hidden; }
 .cell-num { font-size: 0.65rem; font-weight: 900; opacity: 0.2; position: absolute; top: 4px; left: 4px; }
 .cell-tokens { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; align-items: center; height: 100%; margin-top: 10px; }
 .mini-p { width: 20px; height: 20px; border-radius: 4px; font-size: 0.65rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.4s ease; }
 .dimmed { opacity: 0.15; transform: scale(0.85); }
 
+/* ──────── MODAL ──────── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-overlay.open { display: flex; }
-.modal-box { background: var(--navy-mid); color: #fff; padding: 35px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; }
-.m-q { font-size: 1.5rem; font-weight: 700; margin: 25px 0; line-height: 1.6; }
-.m-close { width: 100%; padding: 16px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; }
+.modal-box { background: var(--navy-mid); color: #fff; padding: 35px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; border: 1px solid var(--navy-line); }
+.m-q { font-size: 1.5rem; font-weight: 700; margin: 25px 0; line-height: 1.6; word-break: keep-all; }
+.m-close { width: 100%; padding: 16px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 1rem; }
 
-#ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
-.footer { margin-top: 40px; text-align: center; color: #888; font-size: 0.72rem; line-height: 1.8; }
+/* ──────── ENDING ──────── */
+#ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: #fff; }
+.footer { margin-top: 40px; text-align: center; color: #888; font-size: 0.72rem; line-height: 1.8; padding-bottom: 20px; }
+
+@media (max-width: 768px) { .control-panel { grid-template-columns: 1fr; } .board-row { height: 65px; } }
 </style>
 </head>
 <body>
 
 <div id="setup">
   <div class="setup-hero"><h1>인생 <span>마블</span></h1></div>
+  
   <div class="card">
     <div class="card-label">플레이어 등록</div>
     <div class="add-form">
@@ -78,33 +99,51 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
     </div>
     <div id="player-list" class="player-list"></div>
   </div>
+
   <div class="card">
     <div class="card-label">게임 모드</div>
     <div class="mode-grid">
-      <div><input type="radio" name="mode" id="m-shared" value="shared" checked onchange="setMode('shared')"><label for="m-shared" class="mode-label"><b>단체</b></label></div>
-      <div><input type="radio" name="mode" id="m-color" value="color" onchange="setMode('color')"><label for="m-color" class="mode-label"><b>개인</b></label></div>
+      <div class="mode-opt-group">
+        <input type="radio" name="mode" id="m-shared" value="shared" class="mode-opt" checked onchange="setMode('shared')">
+        <label for="m-shared" class="mode-label">단체</label>
+      </div>
+      <div class="mode-opt-group">
+        <input type="radio" name="mode" id="m-color" value="color" class="mode-opt" onchange="setMode('color')">
+        <label for="m-color" class="mode-label">개인</label>
+      </div>
     </div>
   </div>
+
   <button id="start-btn" onclick="startGame()" disabled>게임 시작하기</button>
+
+  <div class="footer">
+    저작권 : <strong>베이직교회</strong> ㅣ 원작자 : <strong>김희윤 목사</strong> ㅣ 온라인 개발 : <strong>Mina</strong><br>
+  </div>
 </div>
 
 <div id="game">
   <div class="game-header">
-    <div style="color:var(--beige); font-weight:900;">LIFE MARBLE</div>
-    <button onclick="goSetup()" style="background:none; border:none; color:#fff; cursor:pointer;">← 처음으로</button>
+    <div style="color:var(--beige); font-weight:900; letter-spacing:1px;">LIFE MARBLE</div>
+    <button class="back-btn" onclick="goSetup()">← 처음으로</button>
   </div>
   <div class="game-body">
     <div class="control-panel">
       <div class="turn-card">
-        <div id="cur-token" style="width:50px; height:50px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:900;"></div>
-        <div style="flex:1"><div id="cur-name" style="font-size:1.2rem; font-weight:900;"></div><div style="font-size:0.75rem; opacity:0.6;">님의 차례</div></div>
-        <div id="dice-face" style="font-size:2.5rem;">🎲</div>
+        <div id="cur-token" style="width:55px; height:55px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:900; color:#fff;"></div>
+        <div style="flex:1">
+          <div id="cur-name" style="font-size:1.3rem; font-weight:900;"></div>
+          <div style="font-size:0.8rem; opacity:0.6; margin-top:2px;">님의 차례</div>
+        </div>
+        <div id="dice-face" style="font-size:2.8rem; margin-right:10px;">🎲</div>
         <button id="roll-btn" onclick="rollDice()">주사위</button>
       </div>
       <div class="timer-card">
-        <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:50px; background:var(--navy-light); border:none; color:#fff; text-align:center; padding:5px; border-radius:4px;">
+        <div style="text-align:center;">
+          <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:55px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; border-radius:6px; padding:6px; font-weight:700;">
+          <div style="font-size:0.6rem; margin-top:4px; opacity:0.5;">분 설정</div>
+        </div>
         <div id="timer-display">03:00</div>
-        <div style="display:flex; flex-direction:column; gap:4px;">
+        <div class="timer-controls">
           <button id="t-start-btn" class="t-btn t-start" onclick="toggleTimer()">START</button>
           <button class="t-btn t-reset" onclick="resetTimer()">RESET</button>
         </div>
@@ -115,16 +154,17 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 </div>
 
 <div id="ending-screen">
-  <h2>축하합니다! 인생 여정 완료!</h2>
-  <button onclick="goSetup()" style="margin-top:30px; padding:12px 30px; background:var(--beige); border:none; border-radius:8px; font-weight:900; cursor:pointer;">처음으로</button>
+  <h2 style="color:var(--beige); font-size:2rem; margin-bottom:20px;">인생의 모든 여정을 마쳤습니다!</h2>
+  <p style="margin-bottom:40px;">우리의 인생도 소풍처럼 주님과 즐거운 여정 되길!</p>
+  <button onclick="goSetup()" style="padding:14px 40px; background:var(--beige); border:none; border-radius:10px; font-weight:900; cursor:pointer;">처음으로 돌아가기</button>
 </div>
 
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
-    <div id="m-tag" style="padding:4px 12px; border-radius:4px; font-size:0.7rem; margin-bottom:10px; display:inline-block;"></div>
-    <div id="m-who" style="font-size:0.9rem; opacity:0.7;"></div>
+    <div id="m-tag" style="display:inline-block; padding:5px 15px; border-radius:6px; font-size:0.75rem; font-weight:900; margin-bottom:12px;"></div>
+    <div id="m-who" style="opacity:0.8; font-size:1rem;"></div>
     <div class="m-q" id="m-q"></div>
-    <button class="m-close" onclick="closeModal()">다음 차례</button>
+    <button class="m-close" onclick="closeModal()">대화 시작 / 다음 차례</button>
   </div>
 </div>
 
@@ -134,37 +174,8 @@ const ROWS=[{name:'하늘',bg:'#e3f2fd',color:'#1565c0'},{name:'분홍',bg:'#fce
 const PLAYER_COLORS=['#e91e63','#9c27b0','#3f51b5','#2196f3','#009688','#4caf50','#ff9800','#795548'];
 
 let players=[], gameMode='shared', curIdx=0, rolling=false;
-let sharedPos = -1, timer = null, timeLeft = 180, isTimerRunning = false, audioCtx = null;
+let sharedPos = -1, timer = null, timeLeft = 180, isTimerRunning = false;
 
-// --- 오디오 (수정된 주사위 소리: 또르르) ---
-function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
-
-function playDiceSound() {
-  initAudio();
-  const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-  osc.type = 'triangle'; // 부드러운 소리
-  osc.frequency.setValueAtTime(400 + Math.random() * 600, audioCtx.currentTime); // 주파수 변동으로 '또르르' 느낌
-  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03); // 매우 짧게 끊음
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.start(); osc.stop(audioCtx.currentTime + 0.03);
-}
-
-function playAlarmSound() {
-  initAudio();
-  const now = audioCtx.currentTime;
-  [0, 0.4, 0.8].forEach(delay => {
-    const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-    osc.type = 'sine'; osc.frequency.setValueAtTime(880, now + delay);
-    gain.gain.setValueAtTime(0, now + delay);
-    gain.gain.linearRampToValueAtTime(0.2, now + delay + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.3);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(now + delay); osc.stop(now + delay + 0.3);
-  });
-}
-
-// --- 게임 로직 ---
 function addPlayer(){
   const inp=document.getElementById('name-input'); const name=inp.value.trim();
   if(!name || players.length>=8) return;
@@ -173,14 +184,16 @@ function addPlayer(){
 }
 function setMode(m){ gameMode=m; renderSetup(); }
 function removePlayer(id){ players=players.filter(p=>p.id!==id); renderSetup(); }
+
 function renderSetup(){
   const list=document.getElementById('player-list');
-  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><div style="flex:1; font-size:0.8rem;">${p.name}</div><button onclick="removePlayer(${p.id})" style="color:#ff4757; border:none; background:none; cursor:pointer;">✕</button></div>`).join('');
-  document.getElementById('start-btn').disabled=players.length===0;
+  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><div style="flex:1; font-size:0.85rem; font-weight:500;">${p.name}</div><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-weight:900;">✕</button></div>`).join('');
+  const startBtn = document.getElementById('start-btn');
+  startBtn.disabled = players.length === 0;
 }
 
 function startGame(){
-  initAudio(); players.forEach(p=>p.pos=-1); sharedPos = -1; curIdx=0;
+  players.forEach(p=>p.pos=-1); sharedPos = -1; curIdx=0;
   document.getElementById('setup').style.display='none';
   document.getElementById('game').style.display='block';
   document.getElementById('roll-btn').disabled = false;
@@ -222,8 +235,7 @@ function rollDice(){
   let count=0;
   const iv=setInterval(()=>{
     dice.textContent=faces[Math.floor(Math.random()*6)];
-    playDiceSound(); // 수정된 경쾌한 소리
-    if(++count>10){ 
+    if(++count>12){ 
       clearInterval(iv); 
       const val=Math.floor(Math.random()*6)+1; 
       dice.textContent=faces[val-1]; 
@@ -259,7 +271,7 @@ function showModal(r,c,p, idx){
 
 function closeModal(){ 
   document.getElementById('modal').classList.remove('open'); 
-  document.getElementById('roll-btn').disabled = false; 
+  document.getElementById('roll-btn').disabled = false; // 주사위 버튼 부활
   curIdx=(curIdx+1)%players.length; 
   renderTurn(); renderBoard(); 
 }
@@ -268,8 +280,8 @@ function showEnding(){ document.getElementById('ending-screen').style.display='f
 
 function toggleTimer(){ if(isTimerRunning) stopTimer(); else startTimer(); }
 function startTimer(){
-  initAudio(); isTimerRunning = true; document.getElementById('t-start-btn').textContent = "STOP";
-  timer = setInterval(()=>{ timeLeft--; updateTimerDisplay(); if(timeLeft <= 0){ clearInterval(timer); isTimerRunning = false; playAlarmSound(); alert("⏰ 시간이 종료되었습니다!"); resetTimer(); } }, 1000);
+  isTimerRunning = true; document.getElementById('t-start-btn').textContent = "STOP";
+  timer = setInterval(()=>{ timeLeft--; updateTimerDisplay(); if(timeLeft <= 0){ clearInterval(timer); isTimerRunning = false; alert("⏰ 시간이 종료되었습니다!"); resetTimer(); } }, 1000);
 }
 function stopTimer(){ clearInterval(timer); isTimerRunning = false; document.getElementById('t-start-btn').textContent = "START"; }
 function resetTimer(){ stopTimer(); timeLeft = document.getElementById('timer-min').value * 60; updateTimerDisplay(); }
