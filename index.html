@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>인생 마블 - 크리스천 라이프</title>
+
+<meta property="og:title" content="인생 마블 : 크리스천 라이프">
+<meta property="og:description" content="주님과 즐거운 여정 되시길 축복합니다.">
+<meta property="og:image" content="이미지_경로.jpg"> <meta property="og:type" content="website">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="인생 마블 : 크리스천 라이프">
+<meta name="twitter:description" content="주님과 함께하는 즐거운 여정!">
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -24,20 +33,13 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .card-label { font-size: .75rem; font-weight: 700; color: var(--beige); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
 .card-label::after { content:''; flex:1; height:1px; background: rgba(255,255,255,0.1); }
 
-/* 갤럭시 레이아웃 밖으로 나가는 문제 해결 코드 */
 .add-form { display: flex; gap: 6px; width: 100%; align-items: stretch; }
-.add-form input { 
-  flex: 1; min-width: 0; /* 폭이 좁아지면 무한정 줄어들 수 있게 설정 */
-  padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; font-size: 16px; 
-}
-.add-form button { 
-  flex-shrink: 0; /* 버튼은 줄어들지 않게 */
-  padding: 0 15px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 6px; font-weight: 900; cursor: pointer; white-space: nowrap; 
-}
+.add-form input { flex: 1; min-width: 0; padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; font-size: 16px; }
+.add-form button { flex-shrink: 0; padding: 0 15px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 6px; font-weight: 900; cursor: pointer; white-space: nowrap; }
 
 .player-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.player-item { display: flex; align-items: center; gap: 8px; background: var(--navy-light); padding: 8px 10px; border-radius: 6px; overflow: hidden; }
-.player-item span { flex: 1; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-item { display: flex; align-items: center; gap: 8px; background: var(--navy-light); padding: 8px 10px; border-radius: 6px; }
+.token-dot { width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #fff; }
 
 .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .mode-label { width: 100%; display: flex; justify-content: center; align-items: center; padding: 12px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); font-weight: 700; color: #fff; font-size: 0.9rem; }
@@ -53,46 +55,29 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px 12px; border-radius: 4px; font-size: .75rem; }
 
 .game-body { max-width: 1200px; margin: 0 auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-
 .control-panel { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
 .turn-card, .timer-card { background: var(--navy-mid); border-radius: 12px; padding: 15px; color: #fff; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
 #timer-display { font-size: 1.8rem; font-weight: 900; color: var(--beige); }
-.timer-controls { display: flex; flex-direction: column; gap: 4px; }
-.t-btn { padding: 8px; border-radius: 4px; border: none; font-weight: 700; font-size: 0.7rem; }
-.t-start { background: var(--beige); color: var(--navy-deep); }
-
-#roll-btn { 
-  background: var(--beige); color: var(--navy-deep); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; 
-  cursor: pointer; font-size: 1rem; min-height: 50px; flex-shrink: 0;
-}
+#roll-btn { background: var(--beige); color: var(--navy-deep); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; min-height: 50px; }
 #roll-btn:disabled { opacity: 0.4; }
 
 .board { display: flex; flex-direction: column; gap: 4px; background: #e0e0e0; padding: 4px; border-radius: 8px; }
 .board-row { display: flex; gap: 4px; height: 60px; }
-.cell { flex: 1; background: #fff; border-radius: 3px; display: flex; flex-direction: column; align-items: center; padding: 2px; position: relative; overflow: hidden; }
+.cell { flex: 1; background: #fff; border-radius: 3px; display: flex; flex-direction: column; align-items: center; padding: 2px; position: relative; }
 .cell-num { font-size: 0.55rem; font-weight: 900; opacity: 0.2; position: absolute; top: 2px; left: 2px; }
-.cell-tokens { display: flex; flex-wrap: wrap; gap: 1px; justify-content: center; align-items: center; height: 100%; margin-top: 5px; }
 .mini-p { width: 16px; height: 16px; border-radius: 3px; font-size: 0.55rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.3s ease; }
 .dimmed { opacity: 0.15; transform: scale(0.8); }
 
-/* ──────── MODAL ──────── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-overlay.open { display: flex; }
 .modal-box { background: var(--navy-mid); color: #fff; padding: 25px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; }
 .m-q { font-size: 1.2rem; font-weight: 700; margin: 20px 0; line-height: 1.5; word-break: keep-all; }
 .m-close { width: 100%; padding: 14px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; font-size: 1rem; }
 
-/* ──────── ENDING ──────── */
 #ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; color: #fff; }
 
 .footer { margin-top: 25px; text-align: center; color: #888; font-size: 0.65rem; line-height: 1.6; padding-bottom: 20px; }
-
-@media (max-width: 480px) { 
-  .control-panel { grid-template-columns: 1fr; }
-  .setup-hero h1 { font-size: 1.8rem; }
-  .card { padding: 15px; }
-}
 </style>
 </head>
 <body>
@@ -141,22 +126,22 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
         <button id="roll-btn" onclick="rollDice()">주사위</button>
       </div>
       <div class="timer-card">
-        <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:40px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; padding:4px; border-radius:4px; font-weight:700;">
+        <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:40px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; border-radius:4px; font-weight:700;">
         <div id="timer-display">03:00</div>
         <div class="timer-controls">
-          <button id="t-start-btn" class="t-btn t-start" onclick="toggleTimer()">START</button>
-          <button class="t-btn t-reset" onclick="resetTimer()">RESET</button>
+          <button id="t-start-btn" onclick="toggleTimer()" style="background:var(--beige); border:none; border-radius:4px; padding:5px 10px; font-weight:700; font-size:0.6rem;">START</button>
+          <button onclick="resetTimer()" style="background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:4px; padding:5px 10px; font-weight:700; font-size:0.6rem; margin-top:2px;">RESET</button>
         </div>
       </div>
     </div>
     <div class="board" id="board"></div>
-    <div class="footer" style="color:#aaa; font-size:0.6rem;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
+    <div class="footer" style="color:#aaa;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
   </div>
 </div>
 
 <div id="ending-screen">
-  <h2 style="color:var(--beige); font-size:1.5rem; margin-bottom:15px;">인생마블 : 크리스천 라이프를 마쳤습니다.</h2>
-  <p style="font-size:1rem; margin-bottom:30px;">주님과 즐거운 여정 되시길 축복합니다.</p>
+  <h2 style="color:var(--beige); font-size:1.5rem; margin-bottom:15px; word-break:keep-all;">인생마블 : 크리스천 라이프를 마쳤습니다.</h2>
+  <p style="font-size:1.1rem; margin-bottom:30px;">주님과 즐거운 여정 되시길 축복합니다.</p>
   <div style="font-size:0.65rem; opacity:0.7; margin-bottom:30px;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
   <button onclick="goSetup()" style="padding:14px 40px; background:var(--beige); border:none; border-radius:10px; font-weight:900; cursor:pointer;">처음으로 돌아가기</button>
 </div>
@@ -171,20 +156,19 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 </div>
 
 <script>
-// 질문 데이터 및 핵심 로직 유지
-const QUESTIONS=[["내 이름의 뜻은 무엇인가요?","학창 시절 내 별명은 무엇인가요?","내가 살고 싶은 나라는 어디인가요?","요즘 나를 가장 설레게 하는 작은 즐거움은 무엇인가요?","나를 동물에 비유한다면 무엇인가요?","내 인생에서 하나님을 처음 깊이 경험했던 순간은?","사회의 불의를 마주할 때 나는 어떻게 반응하나요?","돈을 사용할 때 내가 지키는 원칙은 무엇인가요?","가사 안 보고 부를 수 있는 찬양 한 곡 부르기","나에게 교회 공동체란 어떤 의미인가요?"],["단체 셀카 한 장 찍어서 수련회 전체방에 올려주세요.","내가 무언가를 새롭게 배운다면 무엇을 배우고 싶나요?","성경 인물 중 한 명을 대한민국 대통령으로 모셔온다면 누가 좋을까요?","신앙 때문에 포기하거나 양보했던 경험이 있나요?","10년 전 과거로 돌아가기 vs. 10년 후 미래로 가기","혼자 신앙생활을 한다면 가장 힘들 것 같은 부분은","일터에서 가장 고민되는 신앙적 문제는 무엇인가요?","팔굽혀펴기를 1회 실시합니다.","내 삶에 큰 영향을 준 성경 한 구절은 무엇인가요?","자녀 또는 다음 세대 교육에서 가장 중요하게 여기는 신앙 가치는 무엇인가요?"],["경제적 어려움 속에서 하나님을 경험한 적이 있나요?","공동체에서 내가 겪어본 갈등은 무엇인가요? 그로 인해 배운 것이 있다면?","내게 믿음의 본보기가 되어준 사람은 누구인가요?","결혼 전 임신한 마리아로 살기 vs. 90세에 임신한 사라로 살기","예수님이 요즘 뉴스 댓글을 보신다면 뭐라고 하실 것 같나요?","세상 지식과 성경의 가치가 충돌할 때 나는 어떻게 균형을 잡나요?","내 인생에 하나님께 가장 감사했던 순간은 언제였나요?","'베이직'으로 삼행시 하기","일이 잘 될 때 내가 가장 경계하는 부분은 무엇인가요?","하나님께서 내게 주신 은사는 무엇인가요?"],["교회 사역 vs. 집안일","기독교 세계관이 내 삶에 어떻게 작용하고 있나요?","내 믿음을 방해하는 가장 큰 유혹은 무엇인가요?","이 사회에 꼭 지켜졌으면 하는 한 가지 가치는?","어린 시절 나의 사진 한 장 보여준다면?","로또 1등은 축복일까요 저주일까요?","나의 훈육 방식은 무엇인가요? (자녀가 없다면, 자녀가 있는 것으로 가정해 주세요)","신앙생활 중 가장 큰 의문이나 고민은 무엇이었나요?","아빠가 목사인 교회 vs. 아빠가 교사인 학교","공동체 안에서 가장 크게 배운 점은 무엇인가요?"],["내가 생각하는 성공의 기준은?","공동체에서 내가 맡아본 역할은 무엇인가요?","복음을 전하기 위해 시도했던 경험은 무엇인가요?","무릎 꿇고 2시간 기도하기 vs. 손들고 2시간 기도하기","지도자와 나라를 위해 기도해 본 경험이 있다면 어떤 마음이었나요?","내 인생에 하나님 앞에서 '이건 잘 썼다' 싶은 소비는?","섬김을 통해 성장했다고 느낀 순간은 언제였나요?","나의 매력 포인트는 무엇인가요?","주변에 선한 영향력을 주기 위해 실천하는 것은 무엇인가요?","돈 때문에 신앙이 흔들렸던 순간?"],["나의 신앙생활을 '유튜브 브이로그'로 만든다면, 영상의 제목과 썸네일은 어떤 모습일까요?","천국 갈 때 딱 하나만 가져갈 수 있다면? (물건)","신앙 때문에 다수의 의견과 다른 입장을 취한 적이 있나요?","사람들이 나를 어떤 person으로 기억하길 바라나요?","내 인생을 영화 장르로 표현한다면?","신앙은 나의 직업관에 어떤 변화를 가져왔나요?","내 신앙은 내 정치적·사회적 견해에 어떤 영향을 주었나요?","앞으로의 신앙 여정에서 이루고 싶은 목표는 무엇인가요?","지금까지 살면서 가장 민망했던 순간은 언제인가요?","내가 번 돈을 나를 위해 쓰는 것과 남을 위해 쓰는 것의 '황금 비율'은 몇 대 몇이라고 생각하시나요?"],["하나님 앞에 섰을 때 듣고 싶은 말은 무엇인가요?","이상적인 크리스천 가정은 어떤 모습이라고 생각하나요?","우리 집안에서 가장 '믿음 좋아 보이는' 사람은 누구인가요?","내가 가진 좋은 습관 하나와 고치고 싶은 나쁜 습관 하나는?","미래를 대비하는 것과 탐욕의 경계는 어디일까요?","배우자와 꼭 같이 해보고 싶은 신앙 습관 하나?","가족에게 신앙생활 또는 복음을 전하는 게 어렵다고 느껴질 때는 언제인가요?","내 인생의 롤 모델은 누구인가요?","내가 어릴 때 받았던 신앙 교육 중 기억에 남는 것은?","이번 수련회에서 가장 기대하는 한 가지는?"]];
+// (모든 질문 및 핵심 로직은 기존과 동일하게 유지됩니다)
+const QUESTIONS=[["내 이름의 뜻은 무엇인가요?","학창 시절 내 별명은 무엇인가요?","내가 살고 싶은 나라는 어디인가요?","요즘 나를 가장 설레게 하는 작은 즐거움은 무엇인가요?","나를 동물에 비유한다면 무엇인가요?","내 인생에서 하나님을 처음 깊이 경험했던 순간은?","사회의 불의를 마주할 때 나는 어떻게 반응하나요?","돈을 사용할 때 내가 지키는 원칙은 무엇인가요?","가사 안 보고 부를 수 있는 찬양 한 곡 부르기","나에게 교회 공동체란 어떤 의미인가요?"],["단체 셀카 한 장 찍어서 수련회 전체방에 올려주세요.","내가 무언가를 새롭게 배운다면 무엇을 배우고 싶나요?","성경 인물 중 한 명을 대한민국 대통령으로 모셔온다면 누가 좋을까요?","신앙 때문에 포기하거나 양보했던 경험이 있나요?","10년 전 과거로 돌아가기 vs. 10년 후 미래로 가기","혼자 신앙생활을 한다면 가장 힘들 것 같은 부분은","일터에서 가장 고민되는 신앙적 문제는 무엇인가요?","팔굽혀펴기를 1회 실시합니다.","내 삶에 큰 영향을 준 성경 한 구절은 무엇인가요?","자녀 또는 다음 세대 교육에서 가장 중요하게 여기는 신앙 가치는 무엇인가요?"],["경제적 어려움 속에서 하나님을 경험한 적이 있나요?","공동체에서 내가 겪어본 갈등은 무엇인가요? 그로 인해 배운 것이 있다면?","내게 믿음의 본보기가 되어준 사람은 누구인가요?","결혼 전 임신한 마리아로 살기 vs. 90세에 임신한 사라로 살기","예수님이 요즘 뉴스 댓글을 보신다면 뭐라고 하실 것 같나요?","세상 지식과 성경의 가치가 충돌할 때 나는 어떻게 균형을 잡나요?","내 인생에 하나님께 가장 감사했던 순간은 언제였나요?","'베이직'으로 삼행시 하기","일이 잘 될 때 내가 가장 경계하는 부분은 무엇인가요?","하나님께서 내게 주신 은사는 무엇인가요?"],["교회 사역 vs. 집안일","기독교 세계관이 내 삶에 어떻게 작용하고 있나요?","내 믿음을 방해하는 가장 큰 유혹은 무엇인가요?","이 사회에 꼭 지켜졌으면 하는 한 가지 가치는?","어린 시절 나의 사진 한 장 보여준다면?","로또 1등은 축복일까요 저주일까요?","나의 훈육 방식은 무엇인가요? (자녀가 없다면, 자녀가 있는 것으로 가정해 주세요)","신앙생활 중 가장 큰 의문이나 고민은 무엇이었나요?","아빠가 목사인 교회 vs. 아빠가 교사인 학교","공동체 안에서 가장 크게 배운 점은 무엇인가요?"],["내가 생각하는 성공의 기준은?","공동체에서 내가 맡아본 역할은 무엇인가요?","복음을 전하기 위해 시도했던 경험은 무엇인가요?","무릎 꿇고 2시간 기도하기 vs. 손들고 2시간 기도하기","지도자와 나라를 위해 기도해 본 경험이 있다면 어떤 마음이었나요?","내 인생에 하나님 앞에서 '이건 잘 썼다' 싶은 소비는?","섬김을 통해 성장했다고 느낀 순간은 언제였나요?","나의 매력 포인트는 무엇인가요?","주변에 선한 영향력을 주기 위해 실천하는 것은 무엇인가요?","돈 때문에 신앙이 흔들렸던 순간?"],["나의 신앙생활을 '유튜브 브이로그'로 만든다면, 영상의 제목과 썸네일은 어떤 모습일까요?","천국 갈 때 딱 하나만 가져갈 수 있다면? (물건)","신앙 때문에 다수의 의견과 다른 입장을 취한 적이 있나요?","사람들이 나를 어떤 사람으로 기억하길 바라나요?","내 인생을 영화 장르로 표현한다면?","신앙은 나의 직업관에 어떤 변화를 가져왔나요?","내 신앙은 내 정치적·사회적 견해에 어떤 영향을 주었나요?","앞으로의 신앙 여정에서 이루고 싶은 목표는 무엇인가요?","지금까지 살면서 가장 민망했던 순간은 언제인가요?","내가 번 돈을 나를 위해 쓰는 것과 남을 위해 쓰는 것의 '황금 비율'은 몇 대 몇이라고 생각하시나요?"],["하나님 앞에 섰을 때 듣고 싶은 말은 무엇인가요?","이상적인 크리스천 가정은 어떤 모습이라고 생각하나요?","우리 집안에서 가장 '믿음 좋아 보이는' 사람은 누구인가요?","내가 가진 좋은 습관 하나와 고치고 싶은 나쁜 습관 하나는?","미래를 대비하는 것과 탐욕의 경계는 어디일까요?","배우자와 꼭 같이 해보고 싶은 신앙 습관 하나?","가족에게 신앙생활 또는 복음을 전하는 게 어렵다고 느껴질 때는 언제인가요?","내 인생의 롤 모델은 누구인가요?","내가 어릴 때 받았던 신앙 교육 중 기억에 남는 것은?","이번 수련회에서 가장 기대하는 한 가지는?"]];
 const ROWS=[{name:'하늘',bg:'#e3f2fd',color:'#1565c0'},{name:'분홍',bg:'#fce4ec',color:'#c2185b'},{name:'주황',bg:'#fff3e0',color:'#e65100'},{name:'베이지',bg:'#efebe9',color:'#4e342e'},{name:'노랑',bg:'#fffde7',color:'#fbc02d'},{name:'연두',bg:'#f1f8e9',color:'#33691e'},{name:'남색',bg:'#e8eaf6',color:'#1a237e'}];
 const PLAYER_COLORS=['#e91e63','#9c27b0','#3f51b5','#2196f3','#009688','#4caf50','#ff9800','#795548'];
 
 let players=[], gameMode='shared', curIdx=0, rolling=false;
 let sharedPos = -1, timer = null, timeLeft = 180, totalStartTime = 180, isTimerRunning = false;
 
-// 3번 로직: 시간 비례 주사위 확률
 function getWeightedDice() {
   const ratio = timeLeft / totalStartTime;
   let pool = [1, 2, 3, 4, 5, 6];
   if (ratio >= 0.6) pool = [1, 1, 2, 2, 3, 3, 4, 5, 6];
-  else if (ratio <= 0.3) pool = [1, 2, 3, 4, 4, 5, 5, 6, 6];
+  else if (ratio <= 0.3) pool = [1, 2, 3, 4, 4, 5, 5, 6, 6, 6];
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -198,7 +182,7 @@ function setMode(m){ gameMode=m; renderSetup(); }
 function removePlayer(id){ players=players.filter(p=>p.id!==id); renderSetup(); }
 function renderSetup(){
   const list=document.getElementById('player-list');
-  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><span>${p.name}</span><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; font-weight:900;">✕</button></div>`).join('');
+  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><span style="flex:1; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; font-weight:900;">✕</button></div>`).join('');
   document.getElementById('start-btn').disabled = players.length === 0;
 }
 function startGame(){
