@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인생 마블 - 슬로우 에디션</title>
+<title>인생 마블 - 스피드 에디션</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -231,16 +231,16 @@ function rollDice(){
   const dice=document.getElementById('dice-face');
   const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
   let count=0;
-  // 애니메이션 속도를 100ms -> 200ms로 늦춤
+  // 주사위 간격을 40ms로 대폭 단축
   const iv=setInterval(()=>{
     dice.textContent=faces[Math.floor(Math.random()*6)];
-    if(++count>10){ 
+    if(++count>15){ 
       clearInterval(iv); 
       const val=Math.floor(Math.random()*6)+1; 
       dice.textContent=faces[val-1]; 
-      setTimeout(()=>movePlayer(val), 600); 
+      setTimeout(()=>movePlayer(val), 200); 
     }
-  }, 200);
+  }, 40);
 }
 
 function movePlayer(val){
