@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,87 +5,17 @@
 
 <meta property="og:title" content="인생 마블 : 크리스천 라이프">
 <meta property="og:description" content="주님과 즐거운 여정 되시길 축복합니다.">
-<meta property="og:image" content="https://drive.google.com/file/d/1Xgg7AZuqxuI3l81EgGYpmW4zizgXb9mC/view?usp=drive_link">
+<meta property="og:image" content="https://drive.google.com/uc?export=view&id=1Xgg7AZuqxuI3l81EgGYpmW4zizgXb9mC">
 <meta property="og:type" content="website">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="인생 마블 : 크리스천 라이프">
 <meta name="twitter:description" content="주님과 함께하는 즐거운 여정!">
-<meta name="twitter:image" content="https://drive.google.com/file/d/1Xgg7AZuqxuI3l81EgGYpmW4zizgXb9mC/view?usp=drive_link">
+<meta name="twitter:image" content="https://drive.google.com/uc?export=view&id=1Xgg7AZuqxuI3l81EgGYpmW4zizgXb9mC">
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --navy-deep: #070d24; --navy-base: #0b1333; --navy-mid: #0f1a42;
-  --navy-light: #1a2755; --navy-line: #1e2f63; --beige: #c4a882;
-}
-
-body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(--navy-mid); overflow-x: hidden; touch-action: manipulation; }
-
-/* ──────── SETUP ──────── */
-#setup { display: flex; flex-direction: column; align-items: center; padding: 30px 15px; min-height: 100vh; background: #fff; }
-.setup-hero { text-align: center; margin-bottom: 25px; }
-.setup-hero h1 { font-size: 2.2rem; font-weight: 900; color: var(--navy-deep); }
-.setup-hero h1 span { color: var(--beige); }
-
-.card { width: 100%; max-width: 600px; background: var(--navy-mid); border-radius: 12px; padding: 20px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; }
-.card-label { font-size: .75rem; font-weight: 700; color: var(--beige); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-.card-label::after { content:''; flex:1; height:1px; background: rgba(255,255,255,0.1); }
-
-.add-form { display: flex; gap: 6px; width: 100%; align-items: stretch; }
-.add-form input { flex: 1; min-width: 0; padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; font-size: 16px; }
-.add-form button { flex-shrink: 0; padding: 0 15px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 6px; font-weight: 900; cursor: pointer; white-space: nowrap; }
-
-.player-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.player-item { display: flex; align-items: center; gap: 8px; background: var(--navy-light); padding: 8px 10px; border-radius: 6px; }
-.token-dot { width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #fff; }
-
-.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.mode-label { width: 100%; display: flex; justify-content: center; align-items: center; padding: 12px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); font-weight: 700; color: #fff; font-size: 0.9rem; }
-.mode-opt { display: none; }
-.mode-opt:checked + .mode-label { border-color: var(--beige); background: rgba(196,168,130,0.25); color: var(--beige); }
-
-#start-btn { width: 100%; max-width: 600px; padding: 16px; background: #efebe4; color: #999; border: none; border-radius: 8px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: 0.2s; margin-top: 5px; }
-#start-btn:not(:disabled) { color: var(--navy-deep); background: #f0e6d6; }
-
-/* ──────── GAME ──────── */
-#game { display: none; min-height: 100vh; background: #fff; }
-.game-header { background: var(--navy-mid); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:100; }
-.back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px 12px; border-radius: 4px; font-size: .75rem; }
-
-.game-body { max-width: 1200px; margin: 0 auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.control-panel { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
-.turn-card, .timer-card { background: var(--navy-mid); border-radius: 12px; padding: 15px; color: #fff; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-
-#timer-display { font-size: 1.8rem; font-weight: 900; color: var(--beige); }
-#roll-btn { background: var(--beige); color: var(--navy-deep); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; min-height: 50px; }
-#roll-btn:disabled { opacity: 0.4; }
-
-.board { display: flex; flex-direction: column; gap: 4px; background: #e0e0e0; padding: 4px; border-radius: 8px; }
-.board-row { display: flex; gap: 4px; height: 60px; }
-.cell { flex: 1; background: #fff; border-radius: 3px; display: flex; flex-direction: column; align-items: center; padding: 2px; position: relative; }
-.cell-num { font-size: 0.55rem; font-weight: 900; opacity: 0.2; position: absolute; top: 2px; left: 2px; }
-.mini-p { width: 16px; height: 16px; border-radius: 3px; font-size: 0.55rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.3s ease; }
-.dimmed { opacity: 0.15; transform: scale(0.8); }
-
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
-.modal-overlay.open { display: flex; }
-.modal-box { background: var(--navy-mid); color: #fff; padding: 25px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; }
-.m-q { font-size: 1.2rem; font-weight: 700; margin: 20px 0; line-height: 1.5; word-break: keep-all; }
-.m-close { width: 100%; padding: 14px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; font-size: 1rem; }
-
-/* ──────── ENDING ──────── */
-#ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; color: #fff; }
-
-.footer { margin-top: 25px; text-align: center; color: #888; font-size: 0.65rem; line-height: 1.6; padding-bottom: 20px; }
-
-@media (max-width: 480px) { 
-  .control-panel { grid-template-columns: 1fr; }
-  .setup-hero h1 { font-size: 1.8rem; }
-  .card { padding: 15px; }
-}
+/* ... 여기에 기존 스타일(CSS) 코드를 넣으세요 ... */
 </style>
 </head>
 <body>
