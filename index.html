@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인생 마블 - 스피드 에디션</title>
+<title>인생 마블 - 하이퍼 스피드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,7 +68,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .cell { flex: 1; background: #fff; border-radius: 4px; display: flex; flex-direction: column; align-items: center; padding: 4px; position: relative; overflow: hidden; }
 .cell-num { font-size: 0.65rem; font-weight: 900; opacity: 0.2; position: absolute; top: 4px; left: 4px; }
 .cell-tokens { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; align-items: center; height: 100%; margin-top: 10px; }
-.mini-p { width: 20px; height: 20px; border-radius: 4px; font-size: 0.65rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.4s ease; }
+.mini-p { width: 20px; height: 20px; border-radius: 4px; font-size: 0.65rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.3s ease; }
 .dimmed { opacity: 0.15; transform: scale(0.85); }
 
 /* ──────── MODAL ──────── */
@@ -78,7 +78,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .m-q { font-size: 1.5rem; font-weight: 700; margin: 25px 0; line-height: 1.6; word-break: keep-all; }
 .m-close { width: 100%; padding: 16px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 1rem; }
 
-/* ──────── ENDING ──────── */
 #ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: #fff; }
 .footer { margin-top: 40px; text-align: center; color: #888; font-size: 0.72rem; line-height: 1.8; padding-bottom: 20px; }
 
@@ -89,7 +88,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 
 <div id="setup">
   <div class="setup-hero"><h1>인생 <span>마블</span></h1></div>
-  
   <div class="card">
     <div class="card-label">플레이어 등록</div>
     <div class="add-form">
@@ -98,7 +96,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
     </div>
     <div id="player-list" class="player-list"></div>
   </div>
-
   <div class="card">
     <div class="card-label">게임 모드</div>
     <div class="mode-grid">
@@ -112,12 +109,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
       </div>
     </div>
   </div>
-
   <button id="start-btn" onclick="startGame()" disabled>게임 시작하기</button>
-
-  <div class="footer">
-    저작권 : <strong>베이직교회</strong> ㅣ 원작자 : <strong>김희윤 목사</strong> ㅣ 온라인 개발 : <strong>Mina</strong><br>
-  </div>
+  <div class="footer">저작권 : <strong>베이직교회</strong> ㅣ 원작자 : <strong>김희윤 목사</strong> ㅣ 온라인 개발 : <strong>Mina</strong></div>
 </div>
 
 <div id="game">
@@ -129,10 +122,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
     <div class="control-panel">
       <div class="turn-card">
         <div id="cur-token" style="width:55px; height:55px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:900; color:#fff;"></div>
-        <div style="flex:1">
-          <div id="cur-name" style="font-size:1.3rem; font-weight:900;"></div>
-          <div style="font-size:0.8rem; opacity:0.6; margin-top:2px;">님의 차례</div>
-        </div>
+        <div style="flex:1"><div id="cur-name" style="font-size:1.3rem; font-weight:900;"></div><div style="font-size:0.8rem; opacity:0.6; margin-top:2px;">님의 차례</div></div>
         <div id="dice-face" style="font-size:2.8rem; margin-right:10px;">🎲</div>
         <button id="roll-btn" onclick="rollDice()">주사위</button>
       </div>
@@ -154,7 +144,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 
 <div id="ending-screen">
   <h2 style="color:var(--beige); font-size:2rem; margin-bottom:20px;">인생의 모든 여정을 마쳤습니다!</h2>
-  <p style="margin-bottom:40px;">우리의 인생도 소풍처럼 주님과 즐거운 여정 되길!</p>
   <button onclick="goSetup()" style="padding:14px 40px; background:var(--beige); border:none; border-radius:10px; font-weight:900; cursor:pointer;">처음으로 돌아가기</button>
 </div>
 
@@ -183,13 +172,11 @@ function addPlayer(){
 }
 function setMode(m){ gameMode=m; renderSetup(); }
 function removePlayer(id){ players=players.filter(p=>p.id!==id); renderSetup(); }
-
 function renderSetup(){
   const list=document.getElementById('player-list');
   list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><div style="flex:1; font-size:0.85rem; font-weight:500;">${p.name}</div><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-weight:900;">✕</button></div>`).join('');
   document.getElementById('start-btn').disabled = players.length === 0;
 }
-
 function startGame(){
   players.forEach(p=>p.pos=-1); sharedPos = -1; curIdx=0;
   document.getElementById('setup').style.display='none';
@@ -197,9 +184,7 @@ function startGame(){
   document.getElementById('roll-btn').disabled = false;
   resetTimer(); renderBoard(); renderTurn();
 }
-
 function goSetup(){ if(confirm('게임을 초기화하시겠습니까?')){ location.reload(); } }
-
 function renderBoard(){
   const board=document.getElementById('board');
   board.innerHTML=ROWS.map((row,ri)=>{
@@ -207,17 +192,11 @@ function renderBoard(){
       ${QUESTIONS[ri].map((q,ci)=>{
         const cellIdx=ri*10+ci;
         const here=players.filter(p=> gameMode==='shared'? sharedPos===cellIdx : p.pos===cellIdx);
-        return `<div class="cell" style="background:${row.bg}; border:1px solid ${row.color}40">
-          <div class="cell-num" style="color:${row.color}">${cellIdx+1}</div>
-          <div class="cell-tokens">${here.map(p=>{
-            return `<div class="mini-p ${gameMode==='shared' && p.id!==players[curIdx].id?'dimmed':''}" style="background:${p.color}">${p.name[0]}</div>`
-          }).join('')}</div>
-        </div>`;
+        return `<div class="cell" style="background:${row.bg}; border:1px solid ${row.color}40"><div class="cell-num" style="color:${row.color}">${cellIdx+1}</div><div class="cell-tokens">${here.map(p=>{return `<div class="mini-p ${gameMode==='shared' && p.id!==players[curIdx].id?'dimmed':''}" style="background:${p.color}">${p.name[0]}</div>`}).join('')}</div></div>`;
       }).join('')}
     </div>`;
   }).join('');
 }
-
 function renderTurn(){
   const p=players[curIdx];
   const tok=document.getElementById('cur-token');
@@ -231,16 +210,16 @@ function rollDice(){
   const dice=document.getElementById('dice-face');
   const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
   let count=0;
-  // 주사위 간격을 40ms로 대폭 단축
+  // 주사위 간격을 15ms(0.015초)로 극단적으로 단축
   const iv=setInterval(()=>{
     dice.textContent=faces[Math.floor(Math.random()*6)];
-    if(++count>15){ 
+    if(++count>12){ 
       clearInterval(iv); 
       const val=Math.floor(Math.random()*6)+1; 
       dice.textContent=faces[val-1]; 
-      setTimeout(()=>movePlayer(val), 200); 
+      setTimeout(()=>movePlayer(val), 100); // 멈춘 후 대기 시간도 0.1초로 단축
     }
-  }, 40);
+  }, 15);
 }
 
 function movePlayer(val){
@@ -267,16 +246,13 @@ function showModal(r,c,p, idx){
   document.getElementById('m-q').textContent=QUESTIONS[r][c];
   document.getElementById('modal').classList.add('open');
 }
-
 function closeModal(){ 
   document.getElementById('modal').classList.remove('open'); 
   document.getElementById('roll-btn').disabled = false; 
   curIdx=(curIdx+1)%players.length; 
   renderTurn(); renderBoard(); 
 }
-
 function showEnding(){ document.getElementById('ending-screen').style.display='flex'; }
-
 function toggleTimer(){ if(isTimerRunning) stopTimer(); else startTimer(); }
 function startTimer(){
   isTimerRunning = true; document.getElementById('t-start-btn').textContent = "STOP";
