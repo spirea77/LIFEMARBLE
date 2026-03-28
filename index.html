@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인생 마블 - 최종 최적화</title>
+<title>인생 마블 - 팀워크 에디션</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --navy-deep: #070d24; --navy-base: #0b1333; --navy-mid: #0f1a42;
   --navy-light: #1a2755; --navy-line: #1e2f63; --beige: #c4a882;
-  --white: #ffffff;
 }
 
 body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(--navy-mid); }
@@ -68,6 +67,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .mini-p { width: 20px; height: 20px; border-radius: 4px; font-size: 0.65rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.4s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 .dimmed { opacity: 0.15; transform: scale(0.85); filter: grayscale(40%); }
 
+/* ──────── FOOTER & COPYRIGHT ──────── */
+.footer { margin-top: 40px; padding: 20px; text-align: center; border-top: 1px solid #eee; color: #888; width: 100%; max-width: 600px; }
+.footer p { font-size: 0.7rem; line-height: 1.6; margin-bottom: 4px; }
+.copy-main { font-weight: 700; color: var(--navy-mid); }
+.copy-warning { color: #cc0000; font-weight: 500; font-size: 0.65rem !important; margin-top: 8px; }
+
 /* ──────── MODAL ──────── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-overlay.open { display: flex; }
@@ -104,6 +109,13 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
     </div>
   </div>
   <button id="start-btn" onclick="startGame()" disabled>게임 시작하기</button>
+
+  <footer class="footer">
+    <p class="copy-main">저작권: 베이직교회 | 원작: 김희윤 목사</p>
+    <p>Online Version: Mina</p>
+    <p>"인생마블의 풍성한 즐거움을 온라인에서도 이어가고자 제작하였습니다."</p>
+    <p class="copy-warning">※ 본 콘텐츠의 무단 복제, 변형 및 재배포를 엄격히 금합니다.</p>
+  </footer>
 </div>
 
 <div id="game">
@@ -114,202 +126,4 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
   <div class="game-body">
     <div class="control-panel">
       <div class="turn-card">
-        <div id="cur-token" style="width:55px; height:55px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:900; box-shadow: 0 4px 10px rgba(0,0,0,0.3);"></div>
-        <div style="flex:1">
-          <div id="cur-name" style="font-size:1.3rem; font-weight:900; color:var(--white)"></div>
-          <div style="font-size:0.8rem; opacity:0.6; margin-top:2px;">님의 질문 차례</div>
-        </div>
-        <div id="dice-face" style="font-size:2.8rem;">🎲</div>
-        <button id="roll-btn" onclick="rollDice()" style="background:var(--beige); border:none; padding:12px 20px; border-radius:8px; font-weight:900; cursor:pointer; color:var(--navy-deep);">주사위</button>
-      </div>
-      <div class="timer-card">
-        <div style="text-align:center;">
-          <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:55px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; border-radius:6px; padding:6px; font-weight:700; font-size:1.1rem;">
-          <div style="font-size:0.65rem; margin-top:4px; opacity:0.5; font-weight:700;">대화 시간(분)</div>
-        </div>
-        <div id="timer-display">03:00</div>
-        <div class="timer-controls">
-          <button id="t-start-btn" class="t-btn t-start" onclick="toggleTimer()">START</button>
-          <button class="t-btn t-reset" onclick="resetTimer()">RESET</button>
-        </div>
-      </div>
-    </div>
-    <div class="board" id="board"></div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal-box">
-    <div id="m-tag" style="display:inline-block; padding:5px 15px; border-radius:6px; font-size:0.75rem; font-weight:900; margin-bottom:12px; letter-spacing:1px;"></div>
-    <div id="m-who" style="opacity:0.8; font-size:1rem;"></div>
-    <div class="m-q" id="m-q"></div>
-    <button class="m-close" onclick="closeModal()">대화 시작 / 다음 차례</button>
-  </div>
-</div>
-
-<script>
-const QUESTIONS=[["내 이름의 뜻은 무엇인가요?","학창 시절 내 별명은 무엇인가요?","내가 살고 싶은 나라는 어디인가요?","요즘 나를 가장 설레게 하는 작은 즐거움은 무엇인가요?","나를 동물에 비유한다면 무엇인가요?","내 인생에서 하나님을 처음 깊이 경험했던 순간은?","사회의 불의를 마주할 때 나는 어떻게 반응하나요?","돈을 사용할 때 내가 지키는 원칙은 무엇인가요?","가사 안 보고 부를 수 있는 찬양 한 곡 부르기","나에게 교회 공동체란 어떤 의미인가요?"],["단체 셀카 한 장 찍어서 수련회 전체방에 올려주세요.","내가 무언가를 새롭게 배운다면 무엇을 배우고 싶나요?","성경 인물 중 한 명을 대한민국 대통령으로 모셔온다면 누가 좋을까요?","신앙 때문에 포기하거나 양보했던 경험이 있나요?","10년 전 과거로 돌아가기 vs. 10년 후 미래로 가기","혼자 신앙생활을 한다면 가장 힘들 것 같은 부분은","일터에서 가장 고민되는 신앙적 문제는 무엇인가요?","팔굽혀펴기를 1회 실시합니다.","내 삶에 큰 영향을 준 성경 한 구절은 무엇인가요?","자녀 또는 다음 세대 교육에서 가장 중요하게 여기는 신앙 가치는 무엇인가요?"],["경제적 어려움 속에서 하나님을 경험한 적이 있나요?","공동체에서 내가 겪어본 갈등은 무엇인가요? 그로 인해 배운 것이 있다면?","내게 믿음의 본보기가 되어준 사람은 누구인가요?","결혼 전 임신한 마리아로 살기 vs. 90세에 임신한 사라로 살기","예수님이 요즘 뉴스 댓글을 보신다면 뭐라고 하실 것 같나요?","세상 지식과 성경의 가치가 충돌할 때 나는 어떻게 균형을 잡나요?","내 인생에 하나님께 가장 감사했던 순간은 언제였나요?","'베이직'으로 삼행시 하기","일이 잘 될 때 내가 가장 경계하는 부분은 무엇인가요?","하나님께서 내게 주신 은사는 무엇인가요?"],["교회 사역 vs. 집안일","기독교 세계관이 내 삶에 어떻게 작용하고 있나요?","내 믿음을 방해하는 가장 큰 유혹은 무엇인가요?","이 사회에 꼭 지켜졌으면 하는 한 가지 가치는?","어린 시절 나의 사진 한 장 보여준다면?","로또 1등은 축복일까요 저주일까요?","나의 훈육 방식은 무엇인가요? (자녀가 없다면, 자녀가 있는 것으로 가정해 주세요)","신앙생활 중 가장 큰 의문이나 고민은 무엇이었나요?","아빠가 목사인 교회 vs. 아빠가 교사인 학교","공동체 안에서 가장 크게 배운 점은 무엇인가요?"],["내가 생각하는 성공의 기준은?","공동체에서 내가 맡아본 역할은 무엇인가요?","복음을 전하기 위해 시도했던 경험은 무엇인가요?","무릎 꿇고 2시간 기도하기 vs. 손들고 2시간 기도하기","지도자와 나라를 위해 기도해 본 경험이 있다면 어떤 마음이었나요?","내 인생에 하나님 앞에서 '이건 잘 썼다' 싶은 소비는?","섬김을 통해 성장했다고 느낀 순간은 언제였나요?","나의 매력 포인트는 무엇인가요?","주변에 선한 영향력을 주기 위해 실천하는 것은 무엇인가요?","돈 때문에 신앙이 흔들렸던 순간?"],["나의 신앙생활을 '유튜브 브이로그'로 만든다면, 영상의 제목과 썸네일은 어떤 모습일까요?","천국 갈 때 딱 하나만 가져갈 수 있다면? (물건)","신앙 때문에 다수의 의견과 다른 입장을 취한 적이 있나요?","사람들이 나를 어떤 사람으로 기억하길 바라나요?","내 인생을 영화 장르로 표현한다면?","신앙은 나의 직업관에 어떤 변화를 가져왔나요?","내 신앙은 내 정치적·사회적 견해에 어떤 영향을 주었나요?","앞으로의 신앙 여정에서 이루고 싶은 목표는 무엇인가요?","지금까지 살면서 가장 민망했던 순간은 언제인가요?","내가 번 돈을 나를 위해 쓰는 것과 남을 위해 쓰는 것의 '황금 비율'은 몇 대 몇이라고 생각하시나요?"],["하나님 앞에 섰을 때 듣고 싶은 말은 무엇인가요?","이상적인 크리스천 가정은 어떤 모습이라고 생각하나요?","우리 집안에서 가장 '믿음 좋아 보이는' 사람은 누구인가요?","내가 가진 좋은 습관 하나와 고치고 싶은 나쁜 습관 하나는?","미래를 대비하는 것과 탐욕의 경계는 어디일까요?","배우자와 꼭 같이 해보고 싶은 신앙 습관 하나?","가족에게 신앙생활 또는 복음을 전하는 게 어렵다고 느껴질 때는 언제인가요?","내 인생의 롤 모델은 누구인가요?","내가 어릴 때 받았던 신앙 교육 중 기억에 남는 것은?","이번 수련회에서 가장 기대하는 한 가지는?"]];
-const ROWS=[
-  {name:'하늘', bg:'#e3f2fd', color:'#1565c0'}, {name:'분홍', bg:'#fce4ec', color:'#c2185b'},
-  {name:'주황', bg:'#fff3e0', color:'#e65100'}, {name:'베이지',bg:'#efebe9', color:'#4e342e'},
-  {name:'노랑', bg:'#fffde7', color:'#fbc02d'}, {name:'연두', bg:'#f1f8e9', color:'#33691e'},
-  {name:'남색', bg:'#e8eaf6', color:'#1a237e'}
-];
-const PLAYER_COLORS=['#e91e63','#9c27b0','#3f51b5','#2196f3','#009688','#4caf50','#ff9800','#795548'];
-
-let players=[], gameMode='shared', curIdx=0, rolling=false;
-let sharedPos = -1; 
-let timer = null, timeLeft = 180, isTimerRunning = false;
-
-function addPlayer(){
-  const inp=document.getElementById('name-input');
-  const name=inp.value.trim();
-  if(!name || players.length>=8) return;
-  players.push({id:Date.now(), name, color:PLAYER_COLORS[players.length], pos:-1});
-  inp.value=''; renderSetup();
-}
-
-function setMode(m){ gameMode=m; renderSetup(); }
-function removePlayer(id){ players=players.filter(p=>p.id!==id); renderSetup(); }
-
-function renderSetup(){
-  const list=document.getElementById('player-list');
-  list.innerHTML=players.map(p=>`
-    <div class="player-item">
-      <div class="token-dot" style="background:${p.color}">${p.name[0]}</div>
-      <div style="flex:1; font-size:0.85rem; font-weight:500;">${p.name}</div>
-      <button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-weight:900;">✕</button>
-    </div>`).join('');
-  document.getElementById('start-btn').disabled=players.length===0;
-}
-
-function startGame(){
-  players.forEach(p=>p.pos=-1); sharedPos = -1; curIdx=0;
-  document.getElementById('setup').style.display='none';
-  document.getElementById('game').style.display='block';
-  resetTimer(); renderBoard(); renderTurn();
-}
-
-function goSetup(){
-  if(confirm('게임이 초기화됩니다. 처음으로 돌아갈까요?')){
-    clearInterval(timer); players=[];
-    document.getElementById('setup').style.display='flex';
-    document.getElementById('game').style.display='none';
-    renderSetup();
-  }
-}
-
-function renderBoard(){
-  const board=document.getElementById('board');
-  board.innerHTML=ROWS.map((row,ri)=>{
-    return `<div class="board-row">
-      ${QUESTIONS[ri].map((q,ci)=>{
-        const cellIdx=ri*10+ci;
-        const here=players.filter(p=> gameMode==='shared'? sharedPos===cellIdx : p.pos===cellIdx);
-        return `<div class="cell" style="background:${row.bg}; border:1px solid ${row.color}40">
-          <div class="cell-num" style="color:${row.color}">${cellIdx+1}</div>
-          <div class="cell-tokens">${here.map(p=>{
-            // 단체 모드일 때만 차례가 아닌 사람의 투명도를 낮춤
-            const isDimmed = (gameMode === 'shared' && p.id !== players[curIdx].id);
-            return `<div class="mini-p ${isDimmed ? 'dimmed' : ''}" style="background:${p.color}">${p.name[0]}</div>`
-          }).join('')}</div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }).join('');
-}
-
-function renderTurn(){
-  const p=players[curIdx];
-  const tok=document.getElementById('cur-token');
-  tok.style.background=p.color; tok.textContent=p.name[0];
-  document.getElementById('cur-name').textContent=p.name;
-  document.getElementById('dice-face').textContent='🎲';
-  document.getElementById('roll-btn').disabled=false;
-}
-
-function rollDice(){
-  if(rolling) return; rolling=true;
-  document.getElementById('roll-btn').disabled=true;
-  const dice=document.getElementById('dice-face');
-  let count=0;
-  const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
-  const iv=setInterval(()=>{
-    dice.textContent=faces[Math.floor(Math.random()*6)];
-    if(++count>12){
-      clearInterval(iv);
-      const val=Math.floor(Math.random()*6)+1;
-      dice.textContent=faces[val-1];
-      setTimeout(()=>movePlayer(val), 500);
-    }
-  },80);
-}
-
-function movePlayer(val){
-  const p=players[curIdx];
-  if(gameMode==='shared'){
-    sharedPos = (sharedPos===-1)?(val-1):(sharedPos+val)%70;
-    showModal(Math.floor(sharedPos/10), sharedPos%10, p, sharedPos);
-  } else {
-    p.pos = (p.pos===-1)?(val-1):(p.pos+val)%70;
-    showModal(Math.floor(p.pos/10), p.pos%10, p, p.pos);
-  }
-  renderBoard(); rolling=false;
-}
-
-function showModal(r,c,p, idx){
-  const tag=document.getElementById('m-tag');
-  tag.textContent=ROWS[r].name + ' 구역';
-  tag.style.background=ROWS[r].color; tag.style.color='#fff';
-  document.getElementById('m-who').innerHTML=`<strong>${p.name}</strong> 님의 질문 (No.${idx+1})`;
-  document.getElementById('m-q').textContent=QUESTIONS[r][c];
-  document.getElementById('modal').classList.add('open');
-}
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
-  curIdx=(curIdx+1)%players.length;
-  renderTurn(); renderBoard();
-}
-
-/* ──────── TIMER LOGIC ──────── */
-function toggleTimer(){
-  if(isTimerRunning) { stopTimer(); } 
-  else { startTimer(); }
-}
-function startTimer(){
-  isTimerRunning = true;
-  document.getElementById('t-start-btn').textContent = "STOP";
-  document.getElementById('t-start-btn').className = "t-btn t-stop";
-  timer = setInterval(()=>{
-    timeLeft--;
-    updateTimerDisplay();
-    if(timeLeft <= 0){
-      clearInterval(timer);
-      isTimerRunning = false;
-      alert("⏰ 대화 시간이 종료되었습니다!");
-      resetTimer();
-    }
-  }, 1000);
-}
-function stopTimer(){
-  clearInterval(timer);
-  isTimerRunning = false;
-  document.getElementById('t-start-btn').textContent = "START";
-  document.getElementById('t-start-btn').className = "t-btn t-start";
-}
-function resetTimer(){
-  stopTimer();
-  const val = document.getElementById('timer-min').value;
-  timeLeft = val * 60;
-  updateTimerDisplay();
-}
-function updateTimerDisplay(){
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
-  document.getElementById('timer-display').textContent = 
-    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-</script>
-</body>
-</html>
+        <div id="cur-token" style="width:55px; height:55px; border-radius:10px; display:flex; align-items:center
