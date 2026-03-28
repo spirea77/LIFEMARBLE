@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>인생 마블 - 크리스천 라이프</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
   --navy-deep: #070d24; --navy-base: #0b1333; --navy-mid: #0f1a42;
   --navy-light: #1a2755; --navy-line: #1e2f63; --beige: #c4a882;
 }
 
-body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(--navy-mid); overflow-x: hidden; }
+body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(--navy-mid); overflow-x: hidden; line-height: 1.5; }
 
 /* ──────── SETUP ──────── */
 #setup { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh; background: #fff; }
@@ -25,7 +25,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .card-label::after { content:''; flex:1; height:1px; background: rgba(255,255,255,0.1); }
 
 .add-form { display: flex; gap: 8px; margin-bottom: 15px; }
-.add-form input { flex: 1; padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; }
+.add-form input { flex: 1; padding: 12px; background: var(--navy-light); border: 1px solid var(--navy-line); border-radius: 6px; color: #fff; outline: none; font-size: 16px; }
 .add-form button { padding: 0 20px; background: var(--beige); color: var(--navy-deep); border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
 
 .player-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
@@ -33,18 +33,18 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 .token-dot { width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700; color: #fff; }
 
 .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.mode-opt-group { display: flex; flex-direction: column; align-items: center; }
-.mode-opt { margin-bottom: 10px; accent-color: var(--beige); }
-.mode-label { width: 100%; display: flex; justify-content: center; align-items: center; padding: 15px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); transition: 0.2s; font-weight: 700; color: #fff; }
-.mode-opt:checked + .mode-label { border-color: var(--beige); background: rgba(196,168,130,0.15); color: var(--beige); }
+.mode-label { width: 100%; display: flex; justify-content: center; align-items: center; padding: 15px; border: 1px solid var(--navy-line); border-radius: 8px; cursor: pointer; background: var(--navy-light); font-weight: 700; color: #fff; touch-action: manipulation; }
+.mode-opt { display: none; }
+.mode-opt:checked + .mode-label { border-color: var(--beige); background: rgba(196,168,130,0.2); color: var(--beige); }
 
-#start-btn { width: 100%; max-width: 600px; padding: 16px; background: #efebe4; color: #999; border: none; border-radius: 8px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+#start-btn { width: 100%; max-width: 600px; padding: 16px; background: #efebe4; color: #999; border: none; border-radius: 8px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: 0.2s; touch-action: manipulation; }
 #start-btn:not(:disabled) { color: var(--navy-deep); }
+#start-btn:active { transform: scale(0.98); background: #e0d9cf; }
 
 /* ──────── GAME ──────── */
-#game { display: none; min-height: 100vh; background: #fff; }
+#game { display: none; min-height: 100vh; background: #fff; position: relative; }
 .game-header { background: var(--navy-mid); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:100; }
-.back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: .75rem; }
+.back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: .75rem; }
 
 .game-body { max-width: 1200px; margin: 0 auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
 
@@ -55,50 +55,55 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
 
 #timer-display { font-size: 2.2rem; font-weight: 900; color: var(--beige); text-shadow: 0 0 10px rgba(196,168,130,0.3); }
 .timer-controls { display: flex; flex-direction: column; gap: 6px; }
-.t-btn { padding: 6px 14px; border-radius: 4px; border: none; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
+.t-btn { padding: 8px 14px; border-radius: 4px; border: none; font-weight: 700; cursor: pointer; font-size: 0.75rem; touch-action: manipulation; }
 .t-start { background: var(--beige); color: var(--navy-deep); }
 .t-reset { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
 
-#roll-btn { background: var(--beige); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; color: var(--navy-deep); }
-#roll-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+#roll-btn { background: var(--beige); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; color: var(--navy-deep); touch-action: manipulation; -webkit-appearance: none; }
+#roll-btn:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
+#roll-btn:active { background: #b0956f; transform: scale(0.95); }
 
 /* ──────── BOARD ──────── */
 .board { display: flex; flex-direction: column; gap: 4px; background: #e0e0e0; padding: 4px; border-radius: 8px; }
 .board-row { display: flex; gap: 4px; height: 75px; }
 .cell { flex: 1; background: #fff; border-radius: 4px; display: flex; flex-direction: column; align-items: center; padding: 4px; position: relative; overflow: hidden; }
-.cell-num { font-size: 0.65rem; font-weight: 900; opacity: 0.2; position: absolute; top: 4px; left: 4px; }
+.cell-num { font-size: 0.6rem; font-weight: 900; opacity: 0.2; position: absolute; top: 4px; left: 4px; }
 .cell-tokens { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; align-items: center; height: 100%; margin-top: 10px; }
-.mini-p { width: 20px; height: 20px; border-radius: 4px; font-size: 0.65rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.3s ease; }
+.mini-p { width: 18px; height: 18px; border-radius: 3px; font-size: 0.6rem; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: all 0.3s ease; }
 .dimmed { opacity: 0.15; transform: scale(0.85); }
 
 /* ──────── MODAL ──────── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-overlay.open { display: flex; }
-.modal-box { background: var(--navy-mid); color: #fff; padding: 35px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; border: 1px solid var(--navy-line); }
-.m-q { font-size: 1.5rem; font-weight: 700; margin: 25px 0; line-height: 1.6; word-break: keep-all; }
-.m-close { width: 100%; padding: 16px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 1rem; }
+.modal-box { background: var(--navy-mid); color: #fff; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; border: 1px solid var(--navy-line); }
+.m-q { font-size: 1.3rem; font-weight: 700; margin: 20px 0; line-height: 1.6; word-break: keep-all; }
+.m-close { width: 100%; padding: 16px; background: var(--beige); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 1rem; touch-action: manipulation; }
 
 /* ──────── ENDING ──────── */
 #ending-screen { display: none; position: fixed; inset: 0; background: var(--navy-deep); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: #fff; }
-.footer { margin-top: 40px; text-align: center; color: #888; font-size: 0.72rem; line-height: 1.8; padding-bottom: 20px; }
 
-@media (max-width: 768px) { .control-panel { grid-template-columns: 1fr; } .board-row { height: 65px; } }
+.footer { margin-top: 30px; text-align: center; color: #888; font-size: 0.7rem; line-height: 1.6; padding-bottom: 20px; }
+
+@media (max-width: 768px) { 
+  .control-panel { grid-template-columns: 1fr; } 
+  .board-row { height: 60px; } 
+  .setup-hero h1 { font-size: 2rem; }
+  .m-q { font-size: 1.15rem; }
+}
 </style>
 </head>
 <body>
 
 <div id="setup">
   <div class="setup-hero"><h1>인생 <span>마블</span></h1></div>
-  
   <div class="card">
     <div class="card-label">플레이어 등록</div>
     <div class="add-form">
-      <input type="text" id="name-input" placeholder="이름을 입력하세요" maxlength="8">
+      <input type="text" id="name-input" placeholder="이름 입력" maxlength="8">
       <button onclick="addPlayer()">추가</button>
     </div>
     <div id="player-list" class="player-list"></div>
   </div>
-
   <div class="card">
     <div class="card-label">게임 모드</div>
     <div class="mode-grid">
@@ -112,35 +117,28 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
       </div>
     </div>
   </div>
-
   <button id="start-btn" onclick="startGame()" disabled>게임 시작하기</button>
-
-  <div class="footer">
-    ⓒ 베이직교회 ㅣ 원작자 : <strong>김희윤 목사</strong> ㅣ 온라인 제작 : <strong>Mina</strong><br>
-  </div>
+  <div class="footer">ⓒ 베이직교회 ㅣ 원작자 : <strong>김희윤 목사</strong> ㅣ 온라인 제작 : <strong>Mina</strong></div>
 </div>
 
 <div id="game">
   <div class="game-header">
-    <div style="color:var(--beige); font-weight:900; letter-spacing:1px;">LIFE MARBLE</div>
+    <div style="color:var(--beige); font-weight:900;">LIFE MARBLE</div>
     <button class="back-btn" onclick="goSetup()">← 처음으로</button>
   </div>
   <div class="game-body">
     <div class="control-panel">
       <div class="turn-card">
-        <div id="cur-token" style="width:55px; height:55px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:900; color:#fff;"></div>
+        <div id="cur-token" style="width:45px; height:45px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:900; color:#fff;"></div>
         <div style="flex:1">
-          <div id="cur-name" style="font-size:1.3rem; font-weight:900;"></div>
-          <div style="font-size:0.8rem; opacity:0.6; margin-top:2px;">님의 차례</div>
+          <div id="cur-name" style="font-size:1.1rem; font-weight:900;"></div>
+          <div style="font-size:0.7rem; opacity:0.6;">님의 차례</div>
         </div>
-        <div id="dice-face" style="font-size:2.8rem; margin-right:10px;">🎲</div>
+        <div id="dice-face" style="font-size:2.2rem; margin-right:8px;">🎲</div>
         <button id="roll-btn" onclick="rollDice()">주사위</button>
       </div>
       <div class="timer-card">
-        <div style="text-align:center;">
-          <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:55px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; border-radius:6px; padding:6px; font-weight:700;">
-          <div style="font-size:0.6rem; margin-top:4px; opacity:0.5;">분 설정</div>
-        </div>
+        <input type="number" id="timer-min" value="3" min="1" max="99" oninput="resetTimer()" style="width:50px; background:var(--navy-light); border:1px solid var(--navy-line); color:#fff; text-align:center; padding:5px; border-radius:4px; font-weight:700;">
         <div id="timer-display">03:00</div>
         <div class="timer-controls">
           <button id="t-start-btn" class="t-btn t-start" onclick="toggleTimer()">START</button>
@@ -149,23 +147,21 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: var(
       </div>
     </div>
     <div class="board" id="board"></div>
-    <div class="footer" style="color:#aaa; margin-top:10px;">
-        ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina
-    </div>
+    <div class="footer" style="color:#aaa;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
   </div>
 </div>
 
 <div id="ending-screen">
-  <h2 style="color:var(--beige); font-size:1.8rem; margin-bottom:15px; word-break:keep-all;">인생마블 : 크리스천 라이프를 마쳤습니다.</h2>
-  <p style="font-size:1.1rem; margin-bottom:40px; color:#fff;">주님과 즐거운 여정되길 축복합니다.</p>
-  <div style="font-size:0.75rem; opacity:0.7; margin-bottom:40px; color:#fff;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
+  <h2 style="color:var(--beige); font-size:1.6rem; margin-bottom:15px;">인생마블 : 크리스천 라이프를 마쳤습니다.</h2>
+  <p style="font-size:1rem; margin-bottom:40px;">주님과 즐거운 여정 되시길 축복합니다.</p>
+  <div style="font-size:0.7rem; opacity:0.7; margin-bottom:30px;">ⓒ 베이직교회 ㅣ 원작자 : 김희윤 목사 ㅣ 온라인 제작 : Mina</div>
   <button onclick="goSetup()" style="padding:14px 40px; background:var(--beige); border:none; border-radius:10px; font-weight:900; cursor:pointer;">처음으로 돌아가기</button>
 </div>
 
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
-    <div id="m-tag" style="display:inline-block; padding:5px 15px; border-radius:6px; font-size:0.75rem; font-weight:900; margin-bottom:12px;"></div>
-    <div id="m-who" style="opacity:0.8; font-size:1rem;"></div>
+    <div id="m-tag" style="display:inline-block; padding:4px 12px; border-radius:6px; font-size:0.7rem; font-weight:900; margin-bottom:12px;"></div>
+    <div id="m-who" style="opacity:0.8; font-size:0.9rem;"></div>
     <div class="m-q" id="m-q"></div>
     <button class="m-close" onclick="closeModal()">대화 시작 / 다음 차례</button>
   </div>
@@ -179,16 +175,11 @@ const PLAYER_COLORS=['#e91e63','#9c27b0','#3f51b5','#2196f3','#009688','#4caf50'
 let players=[], gameMode='shared', curIdx=0, rolling=false;
 let sharedPos = -1, timer = null, timeLeft = 180, totalStartTime = 180, isTimerRunning = false;
 
-// --- 지능형 주사위 (3번 로직) ---
 function getWeightedDice() {
   const ratio = timeLeft / totalStartTime;
   let pool = [1, 2, 3, 4, 5, 6];
-
-  if (ratio >= 0.6) { // 여유로울 때: 1, 2, 3 확률 업
-    pool = [1, 1, 2, 2, 3, 3, 4, 5, 6];
-  } else if (ratio <= 0.3) { // 빠듯할 때: 4, 5, 6 확률 업
-    pool = [1, 2, 3, 4, 4, 5, 5, 6, 6];
-  }
+  if (ratio >= 0.6) pool = [1, 1, 2, 2, 3, 3, 4, 5, 6];
+  else if (ratio <= 0.3) pool = [1, 2, 3, 4, 4, 5, 5, 6, 6];
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -202,7 +193,7 @@ function setMode(m){ gameMode=m; renderSetup(); }
 function removePlayer(id){ players=players.filter(p=>p.id!==id); renderSetup(); }
 function renderSetup(){
   const list=document.getElementById('player-list');
-  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><div style="flex:1; font-size:0.85rem; font-weight:500;">${p.name}</div><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-weight:900;">✕</button></div>`).join('');
+  list.innerHTML=players.map(p=>`<div class="player-item"><div class="token-dot" style="background:${p.color}">${p.name[0]}</div><div style="flex:1; font-size:0.85rem; font-weight:500;">${p.name}</div><button onclick="removePlayer(${p.id})" style="background:none; border:none; color:#ff4757; cursor:pointer; font-weight:900; padding:4px;">✕</button></div>`).join('');
   document.getElementById('start-btn').disabled = players.length === 0;
 }
 function startGame(){
@@ -235,19 +226,24 @@ function renderTurn(){
 
 function rollDice(){
   if(rolling) return;
-  rolling=true; document.getElementById('roll-btn').disabled=true;
+  rolling=true; 
+  const btn = document.getElementById('roll-btn');
+  btn.disabled=true;
+  
   const dice=document.getElementById('dice-face');
   const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
   let count=0;
+  
+  // 모달 안정성을 위해 30ms로 조정 (충분히 빠릅니다)
   const iv=setInterval(()=>{
     dice.textContent=faces[Math.floor(Math.random()*6)];
     if(++count>12){ 
       clearInterval(iv); 
-      const val = getWeightedDice(); // 확률 로직 적용
+      const val = getWeightedDice();
       dice.textContent=faces[val-1]; 
-      setTimeout(()=>movePlayer(val), 100);
+      setTimeout(()=>movePlayer(val), 200);
     }
-  }, 15);
+  }, 30);
 }
 
 function movePlayer(val){
@@ -280,12 +276,10 @@ function closeModal(){
   curIdx=(curIdx+1)%players.length; 
   renderTurn(); renderBoard(); 
 }
-// --- 엔딩 화면 (2번 로직) ---
 function showEnding(){ 
-    document.getElementById('game').style.display = 'none';
-    document.getElementById('ending-screen').style.display='flex'; 
+  document.getElementById('game').style.display='none';
+  document.getElementById('ending-screen').style.display='flex'; 
 }
-
 function toggleTimer(){ if(isTimerRunning) stopTimer(); else startTimer(); }
 function startTimer(){
   isTimerRunning = true; document.getElementById('t-start-btn').textContent = "STOP";
